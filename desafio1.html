@@ -1,0 +1,59 @@
+<script>
+var loop = true
+
+function choose() {
+    alert("Escolha qual função você quer iniciar\n1. Votar\n2. Par ou impar\n3. Parar")
+    var escolhido
+    escolhido = prompt()
+    if (escolhido == 1) {
+        votar()
+    }
+    else if (escolhido == 2) {
+        par_ou_impar()
+    }
+
+    else if (escolhido == 3) {
+        close()
+    }
+
+    else {
+        alert("Incorreto.")
+        choose()
+    }
+}
+
+function votar() {
+    alert("Iniciando.. função votar... ")
+    alert("Site para calcular se você pode votar")
+var idade 
+idade = prompt("Digite sua idade: ")
+if (idade >= 0 && idade <= 15) {
+    alert("Você não pode votar.")
+}
+else if (idade >= 18 && idade < 69) {
+    alert("Voto obrigatório")
+}
+else {
+    alert("Voto facultativo")
+}
+}
+
+function par_ou_impar() {
+    alert("Iniciando.. função par ou impar...")
+    alert("Função para calcular se o número é par ou impar\n")
+var numero
+numero = prompt("Digite um número: ")
+if (numero / 2 == 0) {
+    alert("Seu número é par")
+}
+else {
+    alert("Seu número é impar")
+}
+
+}
+
+while (loop == true) {
+    choose()
+}
+
+</script>
