@@ -1,0 +1,22 @@
+<title>Calculadora de regra de 3</title>
+<h1>Calculadora de regra de 3</h1>
+
+<input type="text" id="a"> ----------- <input type="text" id="b"> <br>
+<input type="text" id="c"> ----------- x
+
+<br>
+<input type="button" value="Calcular" onclick="calc()">
+<p id="resultado"></p>
+
+<script>
+    function calc() {
+    
+        var a = document.getElementById('a').value;
+        var b = document.getElementById('b').value;
+        var c = document.getElementById('c').value;
+
+        var x = (b*c / a);
+        
+        document.getElementById('resultado').innerText = "x é igual a: "+x;
+    }
+</script>
