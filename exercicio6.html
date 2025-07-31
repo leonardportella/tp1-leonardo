@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+
+    function mudaVisibilidadeTudo() { 
+        var classe = document.querySelector(".mostra");
+
+        if (classe.className == "mostra") {
+            classe.className = "esconde"
+        } else {
+            classe.className = "mostra"
+        }
+    }
+
+    function mudaVisibilidade(elemento) {
+        const elementoHTML = document.getElementById(elemento)
+        
+        if (elementoHTML.className == "mostra") {
+            elementoHTML.className = "esconde"
+        } else {
+            elementoHTML.className = "mostra"
+        }
+        
+
+        if (elemento == 'listaTeste1') {
+            atualizaTextoBotao();
+        }
+    }
+
+    function atualizaTextoBotao() {
+        const lista = document.getElementById('listaTeste1');
+        const botao = document.getElementById('botao');
+        
+        if (lista.className == "mostra") {
+            botao.value = "Esconder";
+        } else {
+            botao.value = "Mostrar";
+        }
+    }
+</script>
+<body>
+    <ol>
+        <li onclick="mudaVisibilidade('listaTeste1'); atualizaTextoBotao();">Teste1</li>
+        <ul id="listaTeste1" class="mostra">
+            <li>bla</li>
+            <li>bla</li>
+            <li>bla</li>
+        </ul>
+        <li onclick="mudaVisibilidade('listaTeste2'); atualizaTextoBotao()">Teste2</li>
+        <ul id="listaTeste2" class="mostra">
+            <li>ble</li>
+            <li>ble</li>
+            <li>ble</li>
+        </ul>
+    </ol>    
+    <form>
+        <input type="button" value="Esconder" id="botao" onclick="mudaVisibilidadeTudo()">
+    </form> 
+</body>
+</html>
+
+<style>
+    .mostra {
+        display:block;
+    }
+    .esconde {
+        display:none;
+    }
+</style>
