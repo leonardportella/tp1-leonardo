@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoria</title>
+</head>
+<h1>Monitoria</h1>
+<body>
+    <input type="text" id="nome">
+    <input type="number" id="idade">
+    <input type="text" id="profissao" > 
+    <input type="button" value="Mostrar" onclick="mostrar()">
+    <script>
+
+        function mostrar() {
+        let pessoa = {}
+        pessoa.nome = document.getElementById('nome').value;
+        pessoa.idade = parseFloat(document.getElementById('idade').value);
+        pessoa.profissao = document.getElementById('profissao').value;
+
+        lista = document.createElement("li")
+        lista.innerHTML = `Nome: ${pessoa.nome}, Idade: ${pessoa.idade}, Profissão: ${pessoa.profissao}`
+        document.body.appendChild(lista);
+
+        }
+    </script>
+</body>
+</html>
