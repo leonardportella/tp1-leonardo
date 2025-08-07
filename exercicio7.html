@@ -1,0 +1,98 @@
+<title>Calculadora</title>
+<h1>Calculadora</h1>
+
+<input type="number" id="a">
+<input type="number" id="b">
+
+
+<br>
+<input type="button" value="+" onclick="calc_adicao()">
+<input type="button" value="-" onclick="calc_subtracao()">
+<input type="button" value="x" onclick="calc_multi()">
+<input type="button" value="/" onclick="calc_divisao()">
+<input type="button" value="Limpar" onclick="limpar()">
+<ol id="lista">
+    
+</ol>
+
+<script>
+
+    function calc_adicao() {
+        let listItem = document.createElement("li")
+        let valores = {}
+
+        valores.operando1 
+        valores.operando2
+        valores.operando
+        valores.resultado
+        
+        valores.operando1 = Number(document.getElementById('a').value);
+        valores.operando2 = Number(document.getElementById('b').value);
+
+        valores.resultado = (valores.operando1 + valores.operando2);
+        
+        listItem.innerHTML = valores.operando1+" + "+valores.operando2+" = "+valores.resultado;
+        lista.appendChild(listItem);
+    }
+
+    function calc_subtracao() {
+        let listItem = document.createElement("li")
+        let valores = {}
+
+        valores.operando1 
+        valores.operando2
+        valores.operando
+        valores.resultado
+        
+        valores.operando1 = Number(document.getElementById('a').value);
+        valores.operando2 = Number(document.getElementById('b').value);
+
+        valores.resultado = (valores.operando1 - valores.operando2);
+        
+        listItem.innerHTML = valores.operando1+" - "+valores.operando2+" = "+valores.resultado;
+        lista.appendChild(listItem);
+    }      
+
+    function calc_multi() {
+        let listItem = document.createElement("li")
+        let valores = {}
+
+        valores.operando1 
+        valores.operando2
+        valores.operando
+        valores.resultado
+        
+        valores.operando1 = Number(document.getElementById('a').value);
+        valores.operando2 = Number(document.getElementById('b').value);
+
+        valores.resultado = (valores.operando1 * valores.operando2);
+        
+        listItem.innerHTML = valores.operando1+" x "+valores.operando2+" = "+valores.resultado;
+        lista.appendChild(listItem);
+    }
+
+    function calc_divisao() {
+        let listItem = document.createElement("li")
+        let valores = {}
+
+        valores.operando1 
+        valores.operando2
+        valores.operando
+        valores.resultado
+        
+        valores.operando1 = Number(document.getElementById('a').value);
+        valores.operando2 = Number(document.getElementById('b').value);
+
+        valores.resultado = (valores.operando1 / valores.operando2);
+        
+        listItem.innerHTML = valores.operando1+" / "+valores.operando2+" = "+valores.resultado;
+        lista.appendChild(listItem);
+    }
+
+    function limpar() {
+        
+        document.getElementById('a').value = ""
+        document.getElementById('b').value = ""
+        // resultado.innerText = ""
+    }
+</script>
