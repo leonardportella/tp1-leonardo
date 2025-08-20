@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Simples</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        input, button {
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+        }
+        .resultado {
+            margin-top: 20px;
+        }
+        .historico {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .historico div {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora</h1>
+
+    <input type="number" id="valor1" placeholder="Valor 1">
+    <input type="number" id="valor2" placeholder="Valor 2">
+
+    <br>
+
+    <button onclick="calcular('+')">+</button>
+    <button onclick="calcular('-')">-</button>
+    <button onclick="calcular('*')">x</button>
+    <button onclick="calcular('/')">/</button>
+    <button onclick="calcularPotencia()">^</button>
+    <button onclick="calcularRaiz()">√</button>
+
+    <div class="resultado" id="resultado"></div>
+
+    <div class="historico" id="historico">
+        <h3>Histórico de Operações:</h3>
+    </div>
+
+    <script>
+        let instanciaDB;
+        let listaHistorico = [];
+
+        const requisicaoDB = indexedDB.open("calculadoraDB", 1);
+
+        requisicaoDB.onupgradeneeded = function(eventoDB) {
+            instanciaDB = eventoDB.target.result;
+            if (!instanciaDB.objectStoreNames.contains("historico")) {
+                instanciaDB.createObjectStore("historico", { keyPath: "id", autoIncrement: true });
+            }
+        };
+
+        requisicaoDB.onsuccess = function(eventoDB) {
+            instanciaDB = eventoDB.target.result;
+            carregarHistorico();
+        };
+
+        function carregarHistorico() {
+            let transacaoDB = instanciaDB.transaction("historico", "readonly");
+            let tabelaObjetos = transacaoDB.objectStore("historico");
+            let requisicao = tabelaObjetos.getAll();
+
+            requisicao.onsuccess = function(eventoDB) {
+                listaHistorico = eventoDB.target.result;
+                atualizarDisplayHistorico();
+            };
+        }
+
+        function calcular(operacao) {
+            let valor1 = parseFloat(document.getElementById('valor1').value);
+            let valor2 = parseFloat(document.getElementById('valor2').value);
+
+            if (isNaN(valor1) || isNaN(valor2)) {
+                alert('Preencha ambos os valores!');
+                return;
+            }
+
+            let resultado;
+            switch (operacao) {
+                case '+':
+                    resultado = valor1 + valor2;
+                    break;
+                case '-':
+                    resultado = valor1 - valor2;
+                    break;
+                case '*':
+                    resultado = valor1 * valor2;
+                    break;
+                case '/':
+                    if (valor2 === 0) {
+                        alert('Divisão por zero não permitida!');
+                        return;
+                    }
+                    resultado = valor1 / valor2;
+                    break;
+            }
+
+            adicionarAoHistorico(valor1, valor2, operacao, resultado);
+        }
+
+        function calcularPotencia() {
+            let valor1 = parseFloat(document.getElementById('valor1').value);
+            let valor2 = parseFloat(document.getElementById('valor2').value);
+
+            if (isNaN(valor1) || isNaN(valor2)) {
+                alert('Preencha ambos os valores!');
+                return;
+            }
+
+            let resultado = Math.pow(valor1, valor2);
+            adicionarAoHistorico(valor1, valor2, '^', resultado);
+        }
+
+        function calcularRaiz() {
+            let valor1 = parseFloat(document.getElementById('valor1').value);
+
+            if (isNaN(valor1)) {
+                alert('Preencha o valor 1!');
+                return;
+            }
+
+            let resultado = Math.sqrt(valor1);
+            adicionarAoHistorico(valor1, null, '√', resultado);
+        }
+
+        function adicionarAoHistorico(operando1, operando2, operacao, resultado) {
+            let objetoOperacao = { operando1, operando2, operacao, resultado };
+            listaHistorico.push(objetoOperacao);
+
+            let transacaoDB = instanciaDB.transaction("historico", "readwrite");
+            let tabelaObjetos = transacaoDB.objectStore("historico");
+            tabelaObjetos.add(objetoOperacao);
+
+            exibirResultado(objetoOperacao);
+            atualizarDisplayHistorico();
+        }
+
+        function exibirResultado(objetoOperacao) {
+            let displayResultado = document.getElementById('resultado');
+            if (objetoOperacao.operacao === '√') {
+                displayResultado.textContent = `√${objetoOperacao.operando1} = ${objetoOperacao.resultado}`;
+            } else {
+                displayResultado.textContent = `${objetoOperacao.operando1} ${objetoOperacao.operacao} ${objetoOperacao.operando2} = ${objetoOperacao.resultado}`;
+            }
+        }
+
+        function atualizarDisplayHistorico() {
+            let containerHistorico = document.getElementById('historico');
+            containerHistorico.innerHTML = '<h3>Histórico de Operações:</h3>';
+            listaHistorico.forEach((itemHistorico, indiceItem) => {
+                let divItem = document.createElement('div');
+                if (itemHistorico.operacao === '√') {
+                    divItem.textContent = `√${itemHistorico.operando1} = ${itemHistorico.resultado}`;
+                } else {
+                    divItem.textContent = `${itemHistorico.operando1} ${itemHistorico.operacao} ${itemHistorico.operando2} = ${itemHistorico.resultado}`;
+                }
+
+                let botaoRemover = document.createElement('button');
+                botaoRemover.textContent = 'Remover';
+                botaoRemover.onclick = () => removerItemHistorico(indiceItem);
+                divItem.appendChild(botaoRemover);
+                containerHistorico.appendChild(divItem);
+            });
+        }
+
+        function removerItemHistorico(indiceItem) {
+            listaHistorico.splice(indiceItem, 1);
+            let transacaoDB = instanciaDB.transaction("historico", "readwrite");
+            let tabelaObjetos = transacaoDB.objectStore("historico");
+            tabelaObjetos.clear();
+
+            listaHistorico.forEach((itemHistorico) => {
+                tabelaObjetos.add(itemHistorico);
+            });
+
+            atualizarDisplayHistorico();
+        }
+    </script>
+</body>
+</html>
