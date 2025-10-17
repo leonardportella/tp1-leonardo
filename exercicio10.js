@@ -4,7 +4,7 @@ const http = require('http');
 server = http.createServer((req, res) => {
 
     const dataHoraAtual = new Date();
-    const mensagem = `A data e hora atuais do servidor são: ${dataHoraAtual.toLocaleString('pt-BR')}`;
+    const mensagem = `Data/hora: ${dataHoraAtual.toLocaleString('pt-BR')}`;
     res.writeHead(200, {
         "Content-Type": "text/html"
     });
@@ -13,5 +13,6 @@ server = http.createServer((req, res) => {
     res.end();
 })
 server.listen(port, () => {
-    console.log(`Servidor funcionando na porta: ${port}`);
+    console.log(`porta: ${port}`);
+
 });
